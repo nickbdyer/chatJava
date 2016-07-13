@@ -25,7 +25,7 @@ public class Representative {
         return name;
     }
 
-    public void listenAndRepeat() {
+    public void listenAndRelayMessages() {
         routeMessages(inputFromClient, outputToRoom);
         routeMessages(inputFromRoom, outputToClient);
     }

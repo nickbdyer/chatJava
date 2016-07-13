@@ -17,16 +17,14 @@ import static org.junit.Assert.assertEquals;
 public class RepresentativeTest {
 
     private OutputStream repeatedMessage;
-    private InputStream dummyInput;
     private OutputStream dummyOutput;
     private CommunicationLink assertComms;
 
     @Before
     public void setUp() {
         repeatedMessage = new ByteArrayOutputStream();
-        dummyInput = new DummyInputStream();
         dummyOutput = new DummyOutputStream();
-        assertComms = new CommunicationLink(dummyInput, repeatedMessage);
+        assertComms = new CommunicationLink(new DummyInputStream(), repeatedMessage);
     }
 
     @Test
@@ -41,7 +39,7 @@ public class RepresentativeTest {
         CommunicationLink clientComms = new CommunicationLink(messageFromClient, dummyOutput);
         Representative nick = new Representative("Nick", clientComms, assertComms);
 
-        nick.listenAndRepeat();
+        nick.listenAndRelayMessages();
 
         assertEquals("Hello\n", repeatedMessage.toString());
     }
@@ -52,7 +50,7 @@ public class RepresentativeTest {
         CommunicationLink roomComms = new CommunicationLink(messageFromRoom, dummyOutput);
         Representative nick = new Representative("Nick", assertComms, roomComms);
 
-        nick.listenAndRepeat();
+        nick.listenAndRelayMessages();
 
         assertEquals("Hi Nick\n", repeatedMessage.toString());
     }
@@ -63,7 +61,7 @@ public class RepresentativeTest {
         CommunicationLink clientComms = new CommunicationLink(messageFromClient, dummyOutput);
         Representative nick = new Representative("Nick", clientComms, assertComms);
 
-        nick.listenAndRepeat();
+        nick.listenAndRelayMessages();
 
         assertEquals("Hello\nHow are you?\n", repeatedMessage.toString());
     }
@@ -74,7 +72,7 @@ public class RepresentativeTest {
         CommunicationLink roomComms = new CommunicationLink(messageFromRoom, dummyOutput);
         Representative nick = new Representative("Nick", assertComms, roomComms);
 
-        nick.listenAndRepeat();
+        nick.listenAndRelayMessages();
 
         assertEquals("Hi Nick\nWhat is going on?\n", repeatedMessage.toString());
     }
