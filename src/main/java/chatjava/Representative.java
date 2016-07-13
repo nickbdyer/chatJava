@@ -32,7 +32,10 @@ public class Representative {
 
     public void listenAndRepeat() {
         try {
-            outputToRoom.println(inputFromClient.readLine());
+            while (true) {
+                if (!inputFromClient.ready()) break;
+                outputToRoom.println(inputFromClient.readLine());
+            }
             outputToClient.println(inputFromRoom.readLine());
         } catch (IOException e) {
             e.printStackTrace();

@@ -28,7 +28,9 @@ public class RepresentativeTest {
         CommunicationLink clientComms = new CommunicationLink(messageFromClient, new DummyOutputStream());
         CommunicationLink assessedComms = new CommunicationLink(new DummyInputStream(), repeatedMessage);
         Representative nick = new Representative("Nick", clientComms, assessedComms);
+
         nick.listenAndRepeat();
+
         assertEquals("Hello\n", repeatedMessage.toString());
     }
 
@@ -39,8 +41,22 @@ public class RepresentativeTest {
         CommunicationLink clientComms = new CommunicationLink(new DummyInputStream(), repeatedMessage);
         CommunicationLink assessedComms = new CommunicationLink(messageFromRoom, new DummyOutputStream());
         Representative nick = new Representative("Nick", clientComms, assessedComms);
+
         nick.listenAndRepeat();
+
         assertEquals("Hi Nick\n", repeatedMessage.toString());
     }
 
+    @Test
+    public void representativeWillRepeatEverythingThatTheirClientTellsThem() {
+        OutputStream repeatedMessage = new ByteArrayOutputStream();
+        InputStream messageFromClient = new ByteArrayInputStream("Hello\nHow are you?".getBytes());
+        CommunicationLink clientComms = new CommunicationLink(messageFromClient, new DummyOutputStream());
+        CommunicationLink assessedComms = new CommunicationLink(new DummyInputStream(), repeatedMessage);
+        Representative nick = new Representative("Nick", clientComms, assessedComms);
+
+        nick.listenAndRepeat();
+
+        assertEquals("Hello\nHow are you?\n", repeatedMessage.toString());
+    }
 }
