@@ -31,17 +31,18 @@ public class Representative {
     }
 
     public void listenAndRepeat() {
-        try {
-            while (true) {
-                if (!inputFromClient.ready()) break;
-                outputToRoom.println(inputFromClient.readLine());
+        routeMessages(inputFromClient, outputToRoom);
+        routeMessages(inputFromRoom, outputToClient);
+    }
+
+    private void routeMessages(BufferedReader input, PrintWriter output) {
+        while (true) {
+            try {
+                if (!input.ready()) break;
+                output.println(input.readLine());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            while (true) {
-                if (!inputFromRoom.ready()) break;
-                outputToClient.println(inputFromRoom.readLine());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }
