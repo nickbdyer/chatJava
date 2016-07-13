@@ -1,12 +1,13 @@
 package chatjava.testdoubles;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class DummyInputStream extends InputStream{
+public class DummyInputStream extends ByteArrayInputStream{
 
-    public int read() throws IOException {
-        return 0;
+    public DummyInputStream() {
+        super("".getBytes());
     }
 
 }
