@@ -59,4 +59,17 @@ public class RepresentativeTest {
 
         assertEquals("Hello\nHow are you?\n", repeatedMessage.toString());
     }
+
+    @Test
+    public void representativeWillRepeatEverythingTheyHearToTheirClient() {
+        OutputStream repeatedMessage = new ByteArrayOutputStream();
+        InputStream messageFromRoom = new ByteArrayInputStream("Hi Nick\nWhat is going on?".getBytes());
+        CommunicationLink clientComms = new CommunicationLink(new DummyInputStream(), repeatedMessage);
+        CommunicationLink assessedComms = new CommunicationLink(messageFromRoom, new DummyOutputStream());
+        Representative nick = new Representative("Nick", clientComms, assessedComms);
+
+        nick.listenAndRepeat();
+
+        assertEquals("Hi Nick\nWhat is going on?\n", repeatedMessage.toString());
+    }
 }

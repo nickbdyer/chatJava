@@ -36,7 +36,10 @@ public class Representative {
                 if (!inputFromClient.ready()) break;
                 outputToRoom.println(inputFromClient.readLine());
             }
-            outputToClient.println(inputFromRoom.readLine());
+            while (true) {
+                if (!inputFromRoom.ready()) break;
+                outputToClient.println(inputFromRoom.readLine());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
