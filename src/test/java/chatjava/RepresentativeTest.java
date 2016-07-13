@@ -3,6 +3,7 @@ package chatjava;
 import chatjava.testdoubles.DummyCommunicationLink;
 import chatjava.testdoubles.DummyInputStream;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import chatjava.testdoubles.DummyOutputStream;
 
@@ -15,6 +16,19 @@ import static org.junit.Assert.assertEquals;
 
 public class RepresentativeTest {
 
+    private OutputStream repeatedMessage;
+    private InputStream dummyInput;
+    private OutputStream dummyOutput;
+    private CommunicationLink assertComms;
+
+    @Before
+    public void setUp() {
+        repeatedMessage = new ByteArrayOutputStream();
+        dummyInput = new DummyInputStream();
+        dummyOutput = new DummyOutputStream();
+        assertComms = new CommunicationLink(dummyInput, repeatedMessage);
+    }
+
     @Test
     public void representativeHasAUserName() {
         Representative nick = new Representative("Nick", new DummyCommunicationLink(), new DummyCommunicationLink());
@@ -23,11 +37,9 @@ public class RepresentativeTest {
 
     @Test
     public void representativeWillRepeatWhatTheirClientTellsThem() {
-        OutputStream repeatedMessage = new ByteArrayOutputStream();
         InputStream messageFromClient = new ByteArrayInputStream("Hello".getBytes());
-        CommunicationLink clientComms = new CommunicationLink(messageFromClient, new DummyOutputStream());
-        CommunicationLink assessedComms = new CommunicationLink(new DummyInputStream(), repeatedMessage);
-        Representative nick = new Representative("Nick", clientComms, assessedComms);
+        CommunicationLink clientComms = new CommunicationLink(messageFromClient, dummyOutput);
+        Representative nick = new Representative("Nick", clientComms, assertComms);
 
         nick.listenAndRepeat();
 
@@ -36,11 +48,9 @@ public class RepresentativeTest {
 
     @Test
     public void representativeWillRepeatHeardMessagesToTheirClient() {
-        OutputStream repeatedMessage = new ByteArrayOutputStream();
         InputStream messageFromRoom = new ByteArrayInputStream("Hi Nick".getBytes());
-        CommunicationLink clientComms = new CommunicationLink(new DummyInputStream(), repeatedMessage);
-        CommunicationLink assessedComms = new CommunicationLink(messageFromRoom, new DummyOutputStream());
-        Representative nick = new Representative("Nick", clientComms, assessedComms);
+        CommunicationLink roomComms = new CommunicationLink(messageFromRoom, dummyOutput);
+        Representative nick = new Representative("Nick", assertComms, roomComms);
 
         nick.listenAndRepeat();
 
@@ -49,11 +59,9 @@ public class RepresentativeTest {
 
     @Test
     public void representativeWillRepeatEverythingThatTheirClientTellsThem() {
-        OutputStream repeatedMessage = new ByteArrayOutputStream();
         InputStream messageFromClient = new ByteArrayInputStream("Hello\nHow are you?".getBytes());
-        CommunicationLink clientComms = new CommunicationLink(messageFromClient, new DummyOutputStream());
-        CommunicationLink assessedComms = new CommunicationLink(new DummyInputStream(), repeatedMessage);
-        Representative nick = new Representative("Nick", clientComms, assessedComms);
+        CommunicationLink clientComms = new CommunicationLink(messageFromClient, dummyOutput);
+        Representative nick = new Representative("Nick", clientComms, assertComms);
 
         nick.listenAndRepeat();
 
@@ -62,11 +70,9 @@ public class RepresentativeTest {
 
     @Test
     public void representativeWillRepeatEverythingTheyHearToTheirClient() {
-        OutputStream repeatedMessage = new ByteArrayOutputStream();
         InputStream messageFromRoom = new ByteArrayInputStream("Hi Nick\nWhat is going on?".getBytes());
-        CommunicationLink clientComms = new CommunicationLink(new DummyInputStream(), repeatedMessage);
-        CommunicationLink assessedComms = new CommunicationLink(messageFromRoom, new DummyOutputStream());
-        Representative nick = new Representative("Nick", clientComms, assessedComms);
+        CommunicationLink roomComms = new CommunicationLink(messageFromRoom, dummyOutput);
+        Representative nick = new Representative("Nick", assertComms, roomComms);
 
         nick.listenAndRepeat();
 
