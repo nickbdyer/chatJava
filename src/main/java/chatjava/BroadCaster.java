@@ -16,9 +16,10 @@ public class BroadCaster {
 
     public void listenAndRelayMessages(ChatRoom chatRoom) {
         for (Representative rep : chatRoom.getParticipants()) {
-            if (rep.getOutputToRoom().toByteArray().length > 0) {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(rep.getOutputToRoom().toByteArray());
+            if (inputStream.available() > 0) {
                 try {
-                    new PrintWriter(output, true).println(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(rep.getOutputToRoom().toByteArray()))).readLine());
+                    new PrintWriter(output, true).println(new BufferedReader(new InputStreamReader(inputStream)).readLine());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
