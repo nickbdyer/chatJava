@@ -44,12 +44,14 @@ public class ChatRoomTest {
     public void aRepresentativeCanSendAMessageToTheBroadcaster() {
         ByteArrayInputStream input = new ByteArrayInputStream("Broadcast this message!".getBytes());
         BroadCaster broadCaster = new BroadCaster();
-
+        ChatRoom chatRoom = ChatRoom.empty();
         Representative nick = new Representative("Nick", new CommunicationLink(input, new DummyOutputStream()), new CommunicationLink(new DummyInputStream(), new ByteArrayOutputStream()));
-        nick.listenAndRelayMessages();
-        broadCaster.listenAndRelayMessages();
+        chatRoom.add(nick);
 
-        assertEquals("Broadcast this message!", output.toString());
+        nick.listenAndRelayMessages();
+        broadCaster.listenAndRelayMessages(chatRoom);
+
+        assertEquals("Broadcast this message!\n", broadCaster.getOutput().toString());
     }
 
 }

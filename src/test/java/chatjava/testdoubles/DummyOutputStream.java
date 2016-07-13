@@ -1,11 +1,6 @@
 package chatjava.testdoubles;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.ByteArrayOutputStream;
 
-public class DummyOutputStream extends OutputStream{
-
-    public void write(int b) throws IOException {
-    }
-
+public class DummyOutputStream extends ByteArrayOutputStream {
 }

@@ -10,14 +10,13 @@ import chatjava.testdoubles.DummyOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import static org.junit.Assert.assertEquals;
 
 public class RepresentativeTest {
 
-    private OutputStream repeatedMessage;
-    private OutputStream dummyOutput;
+    private ByteArrayOutputStream repeatedMessage;
+    private ByteArrayOutputStream dummyOutput;
     private CommunicationLink assertComms;
 
     @Before

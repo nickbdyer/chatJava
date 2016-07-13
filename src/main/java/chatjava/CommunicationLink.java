@@ -1,14 +1,14 @@
 package chatjava;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public class CommunicationLink {
 
     private InputStream input;
-    private OutputStream output;
+    private ByteArrayOutputStream output;
 
-    public CommunicationLink(InputStream input, OutputStream output) {
+    public CommunicationLink(InputStream input, ByteArrayOutputStream output) {
         this.input = input;
         this.output = output;
     }
@@ -17,7 +17,7 @@ public class CommunicationLink {
         return input;
     }
 
-    public OutputStream getOutput() {
+    public ByteArrayOutputStream getOutput() {
         return output;
     }
 }

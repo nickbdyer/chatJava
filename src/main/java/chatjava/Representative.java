@@ -1,23 +1,20 @@
 package chatjava;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 
 public class Representative {
 
     private String name;
-    private PrintWriter outputToClient;
-    private PrintWriter outputToRoom;
+    private ByteArrayOutputStream outputToClient;
+    private ByteArrayOutputStream outputToRoom;
     private BufferedReader inputFromClient;
     private BufferedReader inputFromRoom;
 
     public Representative(String name, CommunicationLink client, CommunicationLink room) {
         this.name = name;
-        this.outputToClient = new PrintWriter(client.getOutput(), true);
+        this.outputToClient = client.getOutput();
         this.inputFromClient = new BufferedReader(new InputStreamReader(client.getInput()));
-        this.outputToRoom = new PrintWriter(room.getOutput(), true);
+        this.outputToRoom = room.getOutput();
         this.inputFromRoom = new BufferedReader(new InputStreamReader(room.getInput()));
     }
 
@@ -30,14 +27,18 @@ public class Representative {
         routeMessages(inputFromRoom, outputToClient);
     }
 
-    private void routeMessages(BufferedReader input, PrintWriter output) {
+    private void routeMessages(BufferedReader input, ByteArrayOutputStream output) {
         while (true) {
             try {
                 if (!input.ready()) break;
-                output.println(input.readLine());
+                new PrintWriter(output, true).println(input.readLine());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public ByteArrayOutputStream getOutputToRoom() {
+        return outputToRoom;
     }
 }

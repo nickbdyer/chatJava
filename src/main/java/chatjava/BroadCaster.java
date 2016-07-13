@@ -4,17 +4,26 @@ import java.io.*;
 
 public class BroadCaster {
 
-    private byte[] input;
     private ByteArrayOutputStream output;
 
     public BroadCaster() {
-        this.input = new byte[]{};
         this.output = new ByteArrayOutputStream();
     }
 
+    public ByteArrayOutputStream getOutput() {
+        return output;
+    }
 
-    public void listenAndRelayMessages() {
-        PrintWriter writer = new PrintWriter(output);
-        writer.println(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(input))));
+    public void listenAndRelayMessages(ChatRoom chatRoom) {
+        for (Representative rep : chatRoom.getParticipants()) {
+            if (rep.getOutputToRoom().toByteArray().length > 0) {
+                try {
+                    new PrintWriter(output, true).println(new BufferedReader(new InputStreamReader(new ByteArrayInputStream(rep.getOutputToRoom().toByteArray()))).readLine());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 }

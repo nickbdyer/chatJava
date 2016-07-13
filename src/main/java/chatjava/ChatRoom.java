@@ -6,16 +6,9 @@ import java.util.List;
 public class ChatRoom {
 
     private List<Representative> participants;
-    private BroadCaster broadcaster;
 
     public static ChatRoom empty() {
         return new ChatRoom();
-    }
-
-    public static ChatRoom withBroadCaster(BroadCaster broadCaster) {
-        ChatRoom chatroom = new ChatRoom();
-        chatroom.setBroadcaster(broadCaster);
-        return chatroom;
     }
 
     public ChatRoom() {
@@ -34,7 +27,8 @@ public class ChatRoom {
         participants.remove(representative);
     }
 
-    public void setBroadcaster(BroadCaster broadcaster) {
-        this.broadcaster = broadcaster;
+    public List<Representative> getParticipants() {
+        return participants;
     }
+
 }
